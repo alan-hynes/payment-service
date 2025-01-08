@@ -1,4 +1,4 @@
-name: Java CI/CD Pipeline
+name: Java CI/CD for Payment Service
 
 on:
   push:
@@ -34,7 +34,7 @@ jobs:
         run: mvn test
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/service-name:latest .
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/payment-service:latest .
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -43,7 +43,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/service-name:latest
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/payment-service:latest
 
       - name: Apply Kubernetes manifests
         run: |
