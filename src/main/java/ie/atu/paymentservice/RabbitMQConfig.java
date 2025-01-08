@@ -7,22 +7,18 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    public static final String EXCHANGE = "service_exchange";
-    public static final String QUEUE = "payment_service_queue";
-    public static final String ROUTING_KEY = "payment_routing_key";
-
     @Bean
-    public TopicExchange exchange() {
-        return new TopicExchange(EXCHANGE);
+    public Queue paymentQueue() {
+        return new Queue("paymentQueue", true);
     }
 
     @Bean
-    public Queue queue() {
-        return new Queue(QUEUE);
+    public DirectExchange exchange() {
+        return new DirectExchange("appExchange");
     }
 
     @Bean
-    public Binding binding(Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY);
+    public Binding paymentBinding(Queue paymentQueue, DirectExchange exchange) {
+        return BindingBuilder.bind(paymentQueue).to(exchange).with("payment");
     }
 }
